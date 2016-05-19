@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Assets.Scripts;
 using LevelGenerator;
 
 namespace LevelGen
@@ -22,19 +21,19 @@ namespace LevelGen
 
         public void Generate(int width, int height, float ratio)
         {
-            var mapGenerator = new MapGenerator(width, height, ratio, RoomManager.Instance, DefaultCheckBox.IsChecked.GetValueOrDefault(false));
+            var mapGenerator = new MapGeneratorF.MapGeneratorF(width, height, RoomMaps.DefaultRooms);
             var map = mapGenerator.GenerateMap();
 
-            for (var i = 0; i < mapGenerator.MapWidth; i++)
+            for (var i = 0; i < width; i++)
             {
-                for (var j = 0; j < mapGenerator.MapHeight; j++)
+                for (var j = 0; j < height; j++)
                 {
                     var tile = new PreviewTile();
                     switch (map[i, j])
                     {
-                        case MapGenerator.TileType.Room: tile.TileCanvas.Background = Brushes.Black; break;
-                        case MapGenerator.TileType.Wall: tile.TileCanvas.Background = Brushes.Gray; break;
-                        case MapGenerator.TileType.Exit: tile.TileCanvas.Background = Brushes.CornflowerBlue; break;
+                        case RoomTypes.TileType.Room: tile.TileCanvas.Background = Brushes.Black; break;
+                        case RoomTypes.TileType.Wall: tile.TileCanvas.Background = Brushes.Gray; break;
+                        case RoomTypes.TileType.Exit: tile.TileCanvas.Background = Brushes.CornflowerBlue; break;
                         default: tile.TileCanvas.Background = Brushes.Black; break;
                     }
 
@@ -44,8 +43,8 @@ namespace LevelGen
                 }
             }
 
-            GameCanvas.Width = mapGenerator.MapWidth * _tileWidth + 50;
-            GameCanvas.Height = mapGenerator.MapHeight * _tileHeight + 50;
+            GameCanvas.Width = width * _tileWidth + 50;
+            GameCanvas.Height = height * _tileHeight + 50;
         }
 
         private void OnDesignerOpen(object sender, RoutedEventArgs e)

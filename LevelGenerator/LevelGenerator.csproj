@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -62,6 +63,7 @@
     <Compile Include="Designer.xaml.cs">
       <DependentUpon>Designer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MapGenerator.cs" />
     <Compile Include="PreviewTile.xaml.cs">
       <DependentUpon>PreviewTile.xaml</DependentUpon>
     </Compile>
@@ -111,7 +113,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MapGenerator.cs" />
     <None Include="packages.config" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
@@ -120,6 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MapGenerator\MapGenerator.fsproj">
+      <Project>{8fba3991-c123-4361-b7ff-06c56032e210}</Project>
+      <Name>MapGenerator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

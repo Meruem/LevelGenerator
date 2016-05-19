@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Assets.Scripts;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
@@ -65,96 +64,96 @@ namespace LevelGen
 
         private void Load()
         {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "Room Files | *.room";
-            dialog.Multiselect = true;
-            if (dialog.ShowDialog() != true) return;
+            //var dialog = new OpenFileDialog();
+            //dialog.Filter = "Room Files | *.room";
+            //dialog.Multiselect = true;
+            //if (dialog.ShowDialog() != true) return;
 
-            foreach (var fileName in dialog.FileNames)
-            {
-                var ser = File.ReadAllText(fileName);
-                var room = JsonConvert.DeserializeObject<MapGenerator.RoomInfo>(ser);
-                RoomName = room.RoomName;
-                MinExits = room.MinExits;
-                MaxExits = room.MaxExits;
-                CleanDeadEnds = room.CleanDeadEnds;
-                View.DesignCanvas.Children.Clear();
+            //foreach (var fileName in dialog.FileNames)
+            //{
+            //    var ser = File.ReadAllText(fileName);
+            //    var room = JsonConvert.DeserializeObject<MapGenerator.RoomInfo>(ser);
+            //    RoomName = room.RoomName;
+            //    MinExits = room.MinExits;
+            //    MaxExits = room.MaxExits;
+            //    CleanDeadEnds = room.CleanDeadEnds;
+            //    View.DesignCanvas.Children.Clear();
 
-                if (room.RoomMap != null)
-                {
-                    MapRoomSelected = true;
-                    Width = room.RoomMap.Width;
-                    Height = room.RoomMap.Height;
-                    for (int i = 0; i < Width; i++)
-                    {
-                        for (int j = 0; j < Height; j++)
-                        {
-                            var tile = new Tile { X = j, Y = i, TileType = room.RoomMap.Map[i, j] };
-                            if (room.RoomMap.Exits.Any(e => e.X == j && e.Y == i))
-                            {
-                                tile.IsExit = true;
-                            }
-                            Canvas.SetLeft(tile, j * 21);
-                            Canvas.SetTop(tile, i * 21);
-                            View.DesignCanvas.Children.Add(tile);
-                        }
-                    }
-                }
-                else if (room.DynamicRoom != null)
-                {
-                    DynamicRoomSelected = true;
-                    MinWidth = room.DynamicRoom.MinWidth;
-                    MaxWidth = room.DynamicRoom.MaxWidth;
-                    MinHeight = room.DynamicRoom.MinHeight;
-                    MaxHeight = room.DynamicRoom.MaxHeight;
-                    HasBorder = room.DynamicRoom.HasBorder;
-                }
-            }
+            //    if (room.RoomMap != null)
+            //    {
+            //        MapRoomSelected = true;
+            //        Width = room.RoomMap.Width;
+            //        Height = room.RoomMap.Height;
+            //        for (int i = 0; i < Width; i++)
+            //        {
+            //            for (int j = 0; j < Height; j++)
+            //            {
+            //                var tile = new Tile { X = j, Y = i, TileType = room.RoomMap.Map[i, j] };
+            //                if (room.RoomMap.Exits.Any(e => e.X == j && e.Y == i))
+            //                {
+            //                    tile.IsExit = true;
+            //                }
+            //                Canvas.SetLeft(tile, j * 21);
+            //                Canvas.SetTop(tile, i * 21);
+            //                View.DesignCanvas.Children.Add(tile);
+            //            }
+            //        }
+            //    }
+            //    else if (room.DynamicRoom != null)
+            //    {
+            //        DynamicRoomSelected = true;
+            //        MinWidth = room.DynamicRoom.MinWidth;
+            //        MaxWidth = room.DynamicRoom.MaxWidth;
+            //        MinHeight = room.DynamicRoom.MinHeight;
+            //        MaxHeight = room.DynamicRoom.MaxHeight;
+            //        HasBorder = room.DynamicRoom.HasBorder;
+            //    }
+            //}
         }
 
         private void SaveAs()
         {
-            MapGenerator.RoomInfo room;
+            //MapGenerator.RoomInfo room;
 
-            if (DynamicRoomSelected)
-            {
-                room = new MapGenerator.RoomInfo(RoomName, MinExits, MaxExits,
-                    new MapGenerator.DynamicRoom(MinWidth, MaxWidth, MinHeight, MaxHeight, HasBorder));    
-            }
-            else
-            {
-                room = new MapGenerator.RoomInfo(RoomName, MinExits, MaxExits,
-                    new MapGenerator.RoomMap
-                    {
-                        Width = Width,
-                        Height = Height,
-                        Map = new MapGenerator.TileType[Width, Height],
-                        Exits = new List<MapGenerator.ExitInfo>()
+            //if (DynamicRoomSelected)
+            //{
+            //    room = new MapGenerator.RoomInfo(RoomName, MinExits, MaxExits,
+            //        new MapGenerator.DynamicRoom(MinWidth, MaxWidth, MinHeight, MaxHeight, HasBorder));    
+            //}
+            //else
+            //{
+            //    room = new MapGenerator.RoomInfo(RoomName, MinExits, MaxExits,
+            //        new MapGenerator.RoomMap
+            //        {
+            //            Width = Width,
+            //            Height = Height,
+            //            Map = new MapGenerator.TileType[Width, Height],
+            //            Exits = new List<MapGenerator.ExitInfo>()
                         
-                    });
+            //        });
 
 
-                foreach (var tile in View.DesignCanvas.Children.Cast<Tile>())
-                {
-                    room.RoomMap.Map[tile.Y, tile.X] = tile.TileType;
-                    if (tile.IsExit)
-                    {
-                        room.RoomMap.Exits.Add(new MapGenerator.ExitInfo(tile.X, tile.Y));
-                    }
-                }
-            }
+            //    foreach (var tile in View.DesignCanvas.Children.Cast<Tile>())
+            //    {
+            //        room.RoomMap.Map[tile.Y, tile.X] = tile.TileType;
+            //        if (tile.IsExit)
+            //        {
+            //            room.RoomMap.Exits.Add(new MapGenerator.ExitInfo(tile.X, tile.Y));
+            //        }
+            //    }
+            //}
 
-            room.CleanDeadEnds = CleanDeadEnds;
+            //room.CleanDeadEnds = CleanDeadEnds;
 
-            var ser = JsonConvert.SerializeObject(room);
-            var dialog = new SaveFileDialog();
-            dialog.DefaultExt = "*.room";
-            dialog.Filter = "Room Files | *.room";
-            if (dialog.ShowDialog() == true)
-            {
-                var fileName = dialog.FileName;
-                File.WriteAllText(fileName, ser);
-            }
+            //var ser = JsonConvert.SerializeObject(room);
+            //var dialog = new SaveFileDialog();
+            //dialog.DefaultExt = "*.room";
+            //dialog.Filter = "Room Files | *.room";
+            //if (dialog.ShowDialog() == true)
+            //{
+            //    var fileName = dialog.FileName;
+            //    File.WriteAllText(fileName, ser);
+            //}
         }
 
 

@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelGenerator", "LevelGenerator.csproj", "{81C25A99-B9E8-44FD-AFAF-8F0E4AD2615B}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MapGenerator", "..\MapGenerator\MapGenerator.fsproj", "{8FBA3991-C123-4361-B7FF-06C56032E210}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LevelGeneratorWeb", "..\LevelGeneratorWeb\LevelGeneratorWeb.fsproj", "{8B3A07D2-5B31-4AAA-8306-4F08811D14D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{81C25A99-B9E8-44FD-AFAF-8F0E4AD2615B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81C25A99-B9E8-44FD-AFAF-8F0E4AD2615B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81C25A99-B9E8-44FD-AFAF-8F0E4AD2615B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FBA3991-C123-4361-B7FF-06C56032E210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FBA3991-C123-4361-B7FF-06C56032E210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FBA3991-C123-4361-B7FF-06C56032E210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FBA3991-C123-4361-B7FF-06C56032E210}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B3A07D2-5B31-4AAA-8306-4F08811D14D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B3A07D2-5B31-4AAA-8306-4F08811D14D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B3A07D2-5B31-4AAA-8306-4F08811D14D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B3A07D2-5B31-4AAA-8306-4F08811D14D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
