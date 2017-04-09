@@ -10,7 +10,8 @@
         <StackPanel Orientation="Horizontal">
             <Button Width="80" Click="OnOpenFiles">Open Files</Button>
             <Button Width="80" Click="OnOpenFolder">Open Folder</Button>
-            <TextBox Width="150" Name="PathTextBox">c:\Projects\Misc\as\Rooms\</TextBox>
+            <Button Width="80" Click="OnClear">Clear</Button>
+            <TextBox Width="150" Name="PathTextBox">C:\Projects\LevelGenerator\RoomBlueprints\</TextBox>
         </StackPanel>
         <ListBox Grid.Row="1" Name="RoomsListBox">
             <ListBox.ItemTemplate>

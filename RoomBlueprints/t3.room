@@ -1,0 +1,1 @@
+{"RoomName":"t3","MinExits":1,"MaxExits":3,"CleanDeadEnds":true,"ProbWeight":1,"RoomMap":{"Case":"Blueprint","Fields":[{"Map":[[0,0,0,0,0,0],[0,1,1,1,1,0],[0,1,0,0,1,0],[0,1,0,0,1,0],[0,1,1,1,1,0],[0,0,0,0,0,0]],"Exits":[{"X":0,"Y":1},{"X":0,"Y":4},{"X":1,"Y":0},{"X":1,"Y":5},{"X":4,"Y":0},{"X":4,"Y":5},{"X":5,"Y":1},{"X":5,"Y":4}],"Width":6,"Height":6}]}}

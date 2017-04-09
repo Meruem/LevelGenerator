@@ -64,122 +64,102 @@ namespace LevelGen
 
         private void Load()
         {
-            //var dialog = new OpenFileDialog();
-            //dialog.Filter = "Room Files | *.room";
-            //dialog.Multiselect = true;
-            //if (dialog.ShowDialog() != true) return;
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Room Files | *.room",
+                Multiselect = true
+            };
+            if (dialog.ShowDialog() != true) return;
 
-            //foreach (var fileName in dialog.FileNames)
-            //{
-            //    var ser = File.ReadAllText(fileName);
-            //    var room = JsonConvert.DeserializeObject<MapGenerator.RoomInfo>(ser);
-            //    RoomName = room.RoomName;
-            //    MinExits = room.MinExits;
-            //    MaxExits = room.MaxExits;
-            //    CleanDeadEnds = room.CleanDeadEnds;
-            //    View.DesignCanvas.Children.Clear();
+            foreach (var fileName in dialog.FileNames)
+            {
+                var ser = File.ReadAllText(fileName);
+                var room = JsonConvert.DeserializeObject<RoomTypes.Room>(ser);
+                RoomName = room.RoomName;
+                MinExits = room.MinExits;
+                MaxExits = room.MaxExits;
+                CleanDeadEnds = room.CleanDeadEnds;
+                View.DesignCanvas.Children.Clear();
 
-            //    if (room.RoomMap != null)
-            //    {
-            //        MapRoomSelected = true;
-            //        Width = room.RoomMap.Width;
-            //        Height = room.RoomMap.Height;
-            //        for (int i = 0; i < Width; i++)
-            //        {
-            //            for (int j = 0; j < Height; j++)
-            //            {
-            //                var tile = new Tile { X = j, Y = i, TileType = room.RoomMap.Map[i, j] };
-            //                if (room.RoomMap.Exits.Any(e => e.X == j && e.Y == i))
-            //                {
-            //                    tile.IsExit = true;
-            //                }
-            //                Canvas.SetLeft(tile, j * 21);
-            //                Canvas.SetTop(tile, i * 21);
-            //                View.DesignCanvas.Children.Add(tile);
-            //            }
-            //        }
-            //    }
-            //    else if (room.DynamicRoom != null)
-            //    {
-            //        DynamicRoomSelected = true;
-            //        MinWidth = room.DynamicRoom.MinWidth;
-            //        MaxWidth = room.DynamicRoom.MaxWidth;
-            //        MinHeight = room.DynamicRoom.MinHeight;
-            //        MaxHeight = room.DynamicRoom.MaxHeight;
-            //        HasBorder = room.DynamicRoom.HasBorder;
-            //    }
-            //}
+                if (room.RoomMap.IsBlueprint)
+                {
+                    MapRoomSelected = true;
+                    var bluePrint = ((RoomTypes.TileMap.Blueprint)room.RoomMap).Item;
+                    Width = bluePrint.Width;
+                    Height = bluePrint.Height;
+                    for (int i = 0; i < Width; i++)
+                    {
+                        for (int j = 0; j < Height; j++)
+                        {
+                            var tile = new Tile { X = i, Y = j, TileType = bluePrint.Map[i, j] };
+                            if (bluePrint.Exits.Any(e => e.X == i && e.Y == j))
+                            {
+                                tile.IsExit = true;
+                            }
+                            Canvas.SetLeft(tile, i * 21);
+                            Canvas.SetTop(tile, j * 21);
+                            View.DesignCanvas.Children.Add(tile);
+                        }
+                    }
+                }
+                else if (room.RoomMap.IsDynamicRect)
+                {
+                    DynamicRoomSelected = true;
+                    var dynamicRext = ((RoomTypes.TileMap.DynamicRect) room.RoomMap).Item;
+                    MinWidth = dynamicRext.MinWidth;
+                    MaxWidth = dynamicRext.MaxWidth;
+                    MinHeight = dynamicRext.MinHeight;
+                    MaxHeight = dynamicRext.MaxHeight;
+                    HasBorder = dynamicRext.HasBorder;
+                }
+            }
         }
 
         private void SaveAs()
         {
-            //MapGenerator.RoomInfo room;
+            RoomTypes.Room room;
 
-            //if (DynamicRoomSelected)
-            //{
-            //    room = new MapGenerator.RoomInfo(RoomName, MinExits, MaxExits,
-            //        new MapGenerator.DynamicRoom(MinWidth, MaxWidth, MinHeight, MaxHeight, HasBorder));    
-            //}
-            //else
-            //{
-            //    room = new MapGenerator.RoomInfo(RoomName, MinExits, MaxExits,
-            //        new MapGenerator.RoomMap
-            //        {
-            //            Width = Width,
-            //            Height = Height,
-            //            Map = new MapGenerator.TileType[Width, Height],
-            //            Exits = new List<MapGenerator.ExitInfo>()
-                        
-            //        });
-
-
-            //    foreach (var tile in View.DesignCanvas.Children.Cast<Tile>())
-            //    {
-            //        room.RoomMap.Map[tile.Y, tile.X] = tile.TileType;
-            //        if (tile.IsExit)
-            //        {
-            //            room.RoomMap.Exits.Add(new MapGenerator.ExitInfo(tile.X, tile.Y));
-            //        }
-            //    }
-            //}
-
-            //room.CleanDeadEnds = CleanDeadEnds;
-
-            //var ser = JsonConvert.SerializeObject(room);
-            //var dialog = new SaveFileDialog();
-            //dialog.DefaultExt = "*.room";
-            //dialog.Filter = "Room Files | *.room";
-            //if (dialog.ShowDialog() == true)
-            //{
-            //    var fileName = dialog.FileName;
-            //    File.WriteAllText(fileName, ser);
-            //}
-        }
-
-
-        public ICommand SaveAsCommand
-        {
-            get
+            if (DynamicRoomSelected)
             {
-                return _saveAsCommand ?? (_saveAsCommand = new BasicCommand(SaveAs, true));
+                room = RoomTypes.createDynamicRoom(RoomName, MinExits, MaxExits, CleanDeadEnds,
+                    MinWidth, MaxWidth, MinHeight, MaxHeight, HasBorder);
+            }
+            else
+            {
+                var tileMap = new RoomTypes.TileType[Width, Height];
+                var exits = new List<RoomTypes.Position>();
+                foreach (var tile in View.DesignCanvas.Children.Cast<Tile>())
+                {
+                    tileMap[tile.X, tile.Y] = tile.TileType;
+                    if (tile.IsExit)
+                    {
+                        exits.Add(new RoomTypes.Position(tile.X, tile.Y));
+                    }
+                }
+
+                room = RoomTypes.createBlooprintRoom(RoomName, MinExits, MaxExits, CleanDeadEnds,
+                    Width, Height, tileMap, exits.ToArray());
+            }
+
+
+            var ser = JsonConvert.SerializeObject(room);
+            var dialog = new SaveFileDialog
+            {
+                DefaultExt = "*.room",
+                Filter = "Room Files | *.room"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                var fileName = dialog.FileName;
+                File.WriteAllText(fileName, ser);
             }
         }
 
-        public ICommand LoadCommand
-        {
-            get
-            {
-                return _loadCommand ?? (_loadCommand = new BasicCommand(Load, true));
-            }
-        }
 
-        public ICommand CreateTilesCommand
-        {
-            get
-            {
-                return _createTiles ?? (_createTiles = new BasicCommand(CreateTiles, true));
-            }
-        }
+        public ICommand SaveAsCommand => _saveAsCommand ?? (_saveAsCommand = new BasicCommand(SaveAs, true));
+        public ICommand LoadCommand => _loadCommand ?? (_loadCommand = new BasicCommand(Load, true));
+        public ICommand CreateTilesCommand => _createTiles ?? (_createTiles = new BasicCommand(CreateTiles, true));
 
         public int Width
         {

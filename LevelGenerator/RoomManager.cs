@@ -1,22 +1,24 @@
 using System.Collections.Generic;
 using System.IO;
-using Assets.Scripts;
+using System.Linq;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
 namespace LevelGen
 {
-    public class RoomManager : IRoomQuery
+    public class RoomManager
     {
-        public static RoomManager Instance
-        {
-            get { return _instance ?? (_instance = new RoomManager()); }
-        }
+        public static RoomManager Instance => _instance ?? (_instance = new RoomManager());
 
-        private List<MapGenerator.RoomInfo> _results;
+        private List<RoomTypes.Room> _results = new List<RoomTypes.Room>();
         private static RoomManager _instance;
 
-        public List<MapGenerator.RoomInfo> GetRooms()
+        public void Clear()
+        {
+            _results.Clear();
+        }
+
+        public List<RoomTypes.Room> GetRooms()
         {
             return _results;
         }
@@ -31,38 +33,34 @@ namespace LevelGen
             _results = GenerateFromFiles();
         }
 
-        public List<MapGenerator.RoomInfo> GenerateFromFiles()
+        public List<RoomTypes.Room> GenerateFromFiles()
         {
-            var result = new List<MapGenerator.RoomInfo>();
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "Room Files | *.room";
-            dialog.Multiselect = true;
-            if (dialog.ShowDialog() != true) return null;
-
-            foreach (var file in dialog.FileNames)
+            var dialog = new OpenFileDialog
             {
-                var ser = File.ReadAllText(file);
-                var room = JsonConvert.DeserializeObject<MapGenerator.RoomInfo>(ser);
-                result.Add(room);
-              
-            }
-            return result;
+                Filter = "Room Files | *.room",
+                Multiselect = true
+            };
+            if (dialog.ShowDialog() != true) return new List<RoomTypes.Room>();
+
+            return dialog.FileNames
+                .Select(File.ReadAllText)
+                .Select(JsonConvert.DeserializeObject<RoomTypes.Room>)
+                .ToList();
         }
 
-        public List<MapGenerator.RoomInfo> GenerateFromFolder(string folderName)
+        public List<RoomTypes.Room> GenerateFromFolder(string folderName)
         {
-            var result = new List<MapGenerator.RoomInfo>();
+            var result = new List<RoomTypes.Room>();
             var d = new DirectoryInfo(folderName);
-            FileInfo[] files = d.GetFiles("*.room"); 
-            foreach (FileInfo file in files)
+            var files = d.GetFiles("*.room"); 
+            foreach (var file in files)
             {
                 var fileName = file.FullName;
                 var ser = File.ReadAllText(fileName);
-                var room = JsonConvert.DeserializeObject<MapGenerator.RoomInfo>(ser);
+                var room = JsonConvert.DeserializeObject<RoomTypes.Room>(ser);
                 result.Add(room);
             }
             return result;
         }
-
     }
 }

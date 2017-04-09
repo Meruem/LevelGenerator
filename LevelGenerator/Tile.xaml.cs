@@ -1,8 +1,6 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Navigation;
-using Assets.Scripts;
 
 namespace LevelGen
 {
@@ -11,13 +9,13 @@ namespace LevelGen
     /// </summary>
     public partial class Tile : UserControl
     {
-        private MapGenerator.TileType _tileType;
+        private RoomTypes.TileType _tileType;
         private bool _isExit;
 
         public Tile()
         {
             InitializeComponent();
-            TileType = MapGenerator.TileType.Wall;
+            TileType = RoomTypes.TileType.Wall;
         }
 
         public int X { get; set; }
@@ -40,7 +38,7 @@ namespace LevelGen
             }
         }
 
-        public MapGenerator.TileType TileType
+        public RoomTypes.TileType TileType
         {
             get { return _tileType; }
             set
@@ -49,13 +47,13 @@ namespace LevelGen
                 _tileType = value;
                 switch (_tileType)
                 {
-                    case MapGenerator.TileType.Border:
+                    case RoomTypes.TileType.Border:
                         TileCanvas.Background = Brushes.DarkGreen;
                         break;
-                    case MapGenerator.TileType.Wall:
+                    case RoomTypes.TileType.Wall:
                         TileCanvas.Background = Brushes.Gray;
                         break;
-                    case MapGenerator.TileType.Room:
+                    case RoomTypes.TileType.Room:
                         TileCanvas.Background = Brushes.Black;
                         break;
                 }
@@ -66,7 +64,7 @@ namespace LevelGen
         {
             if (e != null && e.RightButton == MouseButtonState.Pressed)
             {
-                TileType = MapGenerator.TileType.Wall;
+                TileType = RoomTypes.TileType.Wall;
                 return;
             }
 
@@ -78,14 +76,14 @@ namespace LevelGen
                     IsExit = true;
                     break;
                 case TileBrush.Border:
-                    TileType = MapGenerator.TileType.Border;
+                    TileType = RoomTypes.TileType.Border;
                     break;
                 case TileBrush.Room:
-                    TileType = MapGenerator.TileType.Room;
+                    TileType = RoomTypes.TileType.Room;
                     IsExit = false;
                     break;
                 case TileBrush.Wall:
-                    TileType = MapGenerator.TileType.Wall;
+                    TileType = RoomTypes.TileType.Wall;
                     break;
             }
 
@@ -94,7 +92,7 @@ namespace LevelGen
         private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed) UIElement_OnMouseDown(sender, null);
-            if (e.RightButton == MouseButtonState.Pressed) TileType = MapGenerator.TileType.Wall;
+            if (e.RightButton == MouseButtonState.Pressed) TileType = RoomTypes.TileType.Wall;
         }
     }
 }

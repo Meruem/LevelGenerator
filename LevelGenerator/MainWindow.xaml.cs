@@ -1,8 +1,10 @@
 ﻿using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using LevelGenerator;
+using Microsoft.FSharp.Collections;
 
 namespace LevelGen
 {
@@ -21,7 +23,9 @@ namespace LevelGen
 
         public void Generate(int width, int height, float ratio)
         {
-            var mapGenerator = new MapGeneratorF.MapGeneratorF(width, height, RoomMaps.DefaultRooms);
+            var list1 = RoomManager.Instance.GetRooms();
+            var l2 = ListModule.OfSeq(list1.Concat(RoomMaps.DefaultRooms));
+            var mapGenerator = new MapGeneratorF.MapGeneratorF(width, height, l2);
             var map = mapGenerator.GenerateMap();
 
             for (var i = 0; i < width; i++)
@@ -37,8 +41,8 @@ namespace LevelGen
                         default: tile.TileCanvas.Background = Brushes.Black; break;
                     }
 
-                    Canvas.SetLeft(tile, 10 + _tileWidth * j);
-                    Canvas.SetTop(tile, 10 + _tileHeight * i);
+                    Canvas.SetLeft(tile, 10 + _tileWidth * i);
+                    Canvas.SetTop(tile, 10 + _tileHeight * j);
                     GameCanvas.Children.Add(tile);
                 }
             }

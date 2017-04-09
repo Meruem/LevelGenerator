@@ -11,18 +11,30 @@ namespace LevelGen
         public RoomManagerWindow()
         {
             InitializeComponent();
+            RefreshList();
         }
 
         private void OnOpenFolder(object sender, RoutedEventArgs e)
         {
             RoomManager.Instance.OpenFolder(PathTextBox.Text);
-            RoomsListBox.ItemsSource = RoomManager.Instance.GetRooms().Select(r => r.RoomName).ToList();
+            RefreshList();
         }
 
         private void OnOpenFiles(object sender, RoutedEventArgs e)
         {
             RoomManager.Instance.OpenFiles();
+            RefreshList();
+        }
+
+        private void RefreshList()
+        {
             RoomsListBox.ItemsSource = RoomManager.Instance.GetRooms().Select(r => r.RoomName).ToList();
+        }
+
+        private void OnClear(object sender, RoutedEventArgs e)
+        {
+            RoomManager.Instance.Clear();
+            RefreshList();
         }
     }
 }

@@ -16,8 +16,8 @@ let CentralRoomMap =
                         [TileType.Wall; TileType.Wall; TileType.Wall;TileType.Wall;TileType.Room;TileType.Room;TileType.Room;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall];
                         [TileType.Wall; TileType.Wall; TileType.Wall;TileType.Wall;TileType.Room;TileType.Room;TileType.Room;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall];
                         [TileType.Wall; TileType.Wall; TileType.Wall;TileType.Wall;TileType.Room;TileType.Room;TileType.Room;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall];
-                        [TileType.Wall; TileType.Wall; TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall]]
-        Exits = [||]
+                        [TileType.Wall; TileType.Wall; TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall;TileType.Wall]];
+        Exits = [||];
     }
 
 let DefaultRooms =

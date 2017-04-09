@@ -20,7 +20,7 @@ type LevelMap =
 type RoomBlueprint = 
     {
         Map : TileType[,]
-        Exits : ExitInfo[]
+        Exits : ExitInfo []
         Width : int
         Height: int
     }
@@ -48,3 +48,35 @@ type Room =
             RoomMap : TileMap
     }
 
+let createDynamicRoom name minExits maxExits cleanDeadEnds minWidth maxWidth minHeight maxHeight hasBorder =
+    {
+        RoomName = name;
+        MinExits = minExits;
+        MaxExits = maxExits;
+        CleanDeadEnds = cleanDeadEnds;
+        ProbWeight = 1;
+        RoomMap = DynamicRect
+            {
+                MinWidth = minWidth;
+                MaxWidth = maxWidth;
+                MinHeight = minHeight;
+                MaxHeight = maxHeight;
+                HasBorder = hasBorder;
+            }
+     }
+
+let createBlooprintRoom name minExits maxExits cleanDeadEnds width height tileMap exits =
+    {
+        RoomName = name;
+        MinExits = minExits;
+        MaxExits = maxExits;
+        CleanDeadEnds = cleanDeadEnds;
+        ProbWeight = 1;
+        RoomMap = Blueprint
+            {
+                Map = tileMap;
+                Exits = exits;
+                Width = width;
+                Height = height;
+            }
+    }
