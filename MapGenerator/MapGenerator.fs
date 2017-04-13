@@ -14,6 +14,6 @@ type MapGeneratorF(width, height, rooms) =
 
     member this.GenerateMap () = 
         let levelMap = { Width = width; Height = height; Tiles = _tileMap}
-        BuildCenterRoom levelMap _queue
-        BuildAllRooms 0.8 50 rooms levelMap _queue
+        buildCenterRoom levelMap _queue
+        buildAllRooms 0.8 50 rooms levelMap _queue
         _tileMap
