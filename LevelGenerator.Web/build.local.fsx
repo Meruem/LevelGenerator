@@ -62,11 +62,16 @@ let currentApp = ref (fun _ -> async { return None })
 //  Writers.defaultMimeTypesMap
 //    >=> (function | ".json" -> Writers.createMimeType "text/json" true | _ -> None)
 
-let webConfig = defaultConfig //{ defaultConfig with mimeTypesMap = mimeTypes }
+//let webConfig = { defaultConfig with homeFolder = Some (__SOURCE_DIRECTORY__ + "\\public") } //{ defaultConfig with mimeTypesMap = mimeTypes }
+let webConfig = defaultConfig
+
+let homeDirectory = __SOURCE_DIRECTORY__ + "\\public"
+
+let printHomeDirectory = "Home directory: " + homeDirectory
 
 let serverConfig =
   { webConfig with
-      homeFolder = Some __SOURCE_DIRECTORY__
+      homeFolder = Some homeDirectory
       bindings = [ HttpBinding.createSimple HTTP  "127.0.0.1" 8083] }
 
 let reloadAppServer () =
@@ -78,6 +83,7 @@ Target "run" (fun _ ->
   let app ctx = currentApp.Value ctx
   let _, server = startWebServerAsync serverConfig app
 
+  traceImportant printHomeDirectory
   // Start Suave to host it on localhost
   reloadAppServer()
   Async.Start(server)
