@@ -11,6 +11,7 @@ let random = Random()
 let isPositionOutOfBounds pos (levelMap : LevelMap) =
     pos.X <= 0 || pos.X >= levelMap.Width - 1 || pos.Y <= 0 || pos.Y >= levelMap.Height - 1
 
+/// Imprints room into tilemap
 let createRoom position roomMap (tileMap_ : TileType[,]) =
     roomMap |> Array2D.iteri (fun i j tile -> 
                                 if tile = TileType.Room then 
@@ -32,6 +33,7 @@ let buildAllRooms (minRatio:float) maxTries (rooms : Room list) levelMap (queue 
 
     let exitsToCheck = new ResizeArray<Position> ()
 
+    /// Checks that room blueprint can fit into level map at givem position.
     let isRoomAvailable roomPosition (roomMap : TileType[,]) =
         let rec innerRec n = 
             let w = roomMap.GetLength(0)
@@ -43,14 +45,16 @@ let buildAllRooms (minRatio:float) maxTries (rooms : Room list) levelMap (queue 
                 else if n >= (roomMap.Length - 1) then true else innerRec (n + 1)
         innerRec 0
 
-    let rec getAvailableEntrancePosition i start (entrancePositions : Position[]) pos map =
-        let entranceNumber = (start + i) % (entrancePositions.Length)
-        let entrance = entrancePositions.[entranceNumber]
+    /// Checks all exits in blueprint and tries to fit blueprint map into specified position of level map.
+    /// Returns first successfull exit or None.
+    let rec getAvailableEntrancePosition i start blueprint pos =
+        let entranceNumber = (start + i) % (blueprint.Exits.Length)
+        let entrance = blueprint.Exits.[entranceNumber]
         let roomPosition = { X = pos.X - entrance.X; Y = pos.Y - entrance.Y }
-        let isRoomAvailable = isRoomAvailable roomPosition map
+        let isRoomAvailable = isRoomAvailable roomPosition blueprint.Map
         if isRoomAvailable then Some roomPosition
-        else if i = (entrancePositions.Length - 1) then None
-                else getAvailableEntrancePosition (i+1) start entrancePositions pos map
+        else if i = (blueprint.Exits.Length - 1) then None
+                else getAvailableEntrancePosition (i+1) start blueprint pos
 
     let rec findAndQueueExit i leftTop start (entrancePositions:Position[]) addForDeadEndCheck =
         let entranceNumber = (start + 0) % (entrancePositions.Length)
@@ -75,7 +79,7 @@ let buildAllRooms (minRatio:float) maxTries (rooms : Room list) levelMap (queue 
         | DynamicRect _ -> false
         | Blueprint blueprint ->
             let start = random.Next(0, blueprint.Exits.Length)
-            let roomPosition = getAvailableEntrancePosition 0 start blueprint.Exits pos blueprint.Map
+            let roomPosition = getAvailableEntrancePosition 0 start blueprint pos 
             match roomPosition with
             | None -> false
             | Some entrancePosition -> 
@@ -84,7 +88,7 @@ let buildAllRooms (minRatio:float) maxTries (rooms : Room list) levelMap (queue 
                 findAndQueueExits exitCount entrancePosition blueprint.Exits roomInfo.CleanDeadEnds
                 true
 
-    // Creates tiles map from dynamic room specification
+    /// Creates tiles map from dynamic room specification
     let buildRoomMap width height hasBorder =
             let adjWidth = if hasBorder then width + 2 else width
             let adjHeight = if hasBorder then height + 2 else height
@@ -117,9 +121,9 @@ let buildAllRooms (minRatio:float) maxTries (rooms : Room list) levelMap (queue 
                             ) []
 
             {
-                Width = adjWidth;
-                Height = adjHeight;
-                Map = map;
+                Width = adjWidth
+                Height = adjHeight
+                Map = map
                 Exits = List.toArray (exits1 @ exits2)
             }
 
@@ -132,6 +136,7 @@ let buildAllRooms (minRatio:float) maxTries (rooms : Room list) levelMap (queue 
             let blueprint = buildRoomMap width height dyn.HasBorder
             tryBuildRoomFromRoomMap pos { room with RoomMap = Blueprint blueprint } 
 
+    /// Tries to build one room with max tries = count.
     let rec buildSingleRoom pos roomInfo count =
         if count = 0 then ()
         else
@@ -145,6 +150,7 @@ let buildAllRooms (minRatio:float) maxTries (rooms : Room list) levelMap (queue 
             if tile = TileType.Room then sum <- (sum + 1) else ())
         sum
 
+    /// Gets number of occupied (room or exit) spaces adjencent to given position.    
     let roomAroundCount pos =
         let directions = [ {X = 0; Y = 1}; {X = 0; Y = -1}; {X = 1; Y = 0}; {X = -1; Y = 0}]
         directions |> List.fold (fun agg p -> 
