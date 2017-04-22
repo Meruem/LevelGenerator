@@ -16,6 +16,7 @@ open Suave
 open Suave.Http
 open Suave.Web
 open Suave.Writers
+open Suave.Logging
 open Microsoft.FSharp.Compiler.Interactive.Shell
 
 // --------------------------------------------------------------------------------------
@@ -65,13 +66,14 @@ let currentApp = ref (fun _ -> async { return None })
 //let webConfig = { defaultConfig with homeFolder = Some (__SOURCE_DIRECTORY__ + "\\public") } //{ defaultConfig with mimeTypesMap = mimeTypes }
 let webConfig = defaultConfig
 
-let homeDirectory = __SOURCE_DIRECTORY__ + "\\public"
+let homeDirectory = __SOURCE_DIRECTORY__
 
 let printHomeDirectory = "Home directory: " + homeDirectory
 
 let serverConfig =
   { webConfig with
       homeFolder = Some homeDirectory
+      logger =  Targets.create Verbose [||]
       bindings = [ HttpBinding.createSimple HTTP  "127.0.0.1" 8083] }
 
 let reloadAppServer () =
@@ -79,7 +81,7 @@ let reloadAppServer () =
     currentApp.Value <- app
     traceImportant "New version of app.fsx loaded!" )
 
-Target "run" (fun _ ->
+Target "runlocal" (fun _ ->
   let app ctx = currentApp.Value ctx
   let _, server = startWebServerAsync serverConfig app
 
@@ -96,4 +98,4 @@ Target "run" (fun _ ->
   System.Console.ReadLine() |> ignore
 )
 
-RunTargetOrDefault "run"
+RunTargetOrDefault "runlocal"

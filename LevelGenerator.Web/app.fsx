@@ -14,8 +14,8 @@ open RoomMaps
 open RoomTypes
 open Newtonsoft.Json
 
-let viewPath file = "LevelGenerator.Web/public/" + file  
-let scriptPath file = "LevelGenerator.Web/public/scripts/" + file
+let viewPath file = __SOURCE_DIRECTORY__ + "/public/" + file  
+let scriptPath file = __SOURCE_DIRECTORY__ + "/public/scripts/" + file
 
 let getTextResult (tileMap : TileType[,]) =
   let sb = StringBuilder()
@@ -28,14 +28,15 @@ let getTextResult (tileMap : TileType[,]) =
     sb.AppendLine "" |> ignore
   sb.ToString()
 
-let app =
-    choose
-      [ GET >=> choose
-          [ path "/" >=> Files.file (viewPath "index.html")
-            path "/scripts/app.js" >=> Files.file (scriptPath "app.js")
-            path "/3rdParty/vue.js" >=> Files.file "LevelGenerator.Web/node_modules/vue/dist/vue.js" ]
-        GET >=>  pathScan "/generate/%d/%d" (fun (width, height) -> 
-          let mg = MapGeneratorF(width, height, DefaultRooms)
-          let result = mg.GenerateMap ()
-          OK (JsonConvert.SerializeObject result)) ]
+let app = 
+      choose
+        [ GET >=> choose
+            [ path "/" >=> Files.file (viewPath "index.html")
+              path "/scripts/app.js" >=> Files.file (scriptPath "app.js")
+              path "/3rdParty/vue.js" >=> Redirection.redirect "https://unpkg.com/vue" ]
+          GET >=>  pathScan "/generate/%d/%d" (fun (width, height) -> 
+            let mg = MapGeneratorF(width, height, DefaultRooms)
+            let result = mg.GenerateMap ()
+            OK (JsonConvert.SerializeObject result)) 
+            ]
 
