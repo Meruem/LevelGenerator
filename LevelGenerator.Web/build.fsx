@@ -15,8 +15,8 @@ Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
 #r "../packages/Suave/lib/net40/Suave.dll"
 #load "app.fsx"
 
-open Suave // always open suave
-open Suave.Web // for config
+open Suave 
+open Suave.Web
 open Suave.Successful
 
 open System.Net
