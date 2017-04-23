@@ -33,6 +33,10 @@ Target "Deploy" (fun _ ->
     |> Zip buildDir (deployDir + "ApplicationName." + version + ".zip")
 )
 
+Target "DeployAzure" (fun _ ->
+    CopyDir @"d:\home\site\wwwroot" "LevelGenerator.Web" (fun _ -> true)
+    CopyFile @"d:\home\site\wwwroot" @"LevelGenerator.Web\web.config" )
+
 // Build order
 "Clean"
   ==> "Build"
