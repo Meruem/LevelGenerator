@@ -13,6 +13,11 @@ let appReferences  =
     !! "/**/*.csproj"
     ++ "/**/*.fsproj"
 
+let wwwRootDir = @"d:\home\site\wwwroot"
+
+let wwwRoot dir = 
+    wwwRootDir + @"\" + dir
+
 // version info
 let version = "0.1"  // or retrieve from CI server
 
@@ -34,7 +39,9 @@ Target "Deploy" (fun _ ->
 )
 
 Target "DeployAzure" (fun _ ->
-    CopyDir @"d:\home\site\wwwroot" "LevelGenerator.Web" (fun _ -> true)
+    CopyDir (wwwRoot "LevelGenerator.Web") "LevelGenerator.Web" allFiles
+    CopyDir (wwwRoot "build") "build" allFiles
+    CopyDir (wwwRoot "packages") "packages" allFiles
     CopyFile @"d:\home\site\wwwroot" @"LevelGenerator.Web\web.config" )
 
 // Build order
