@@ -1,6 +1,11 @@
-﻿#r "../packages/Suave/lib/net40/Suave.dll"
-#r "../build/MapGenerator.dll"
-#r "../packages/Newtonsoft.Json/lib/net40/Newtonsoft.Json.dll"
+﻿#I "../packages"
+#I "../build"
+#I "../../repository/packages"
+#I "../../repository/build"
+
+#r "Suave/lib/net40/Suave.dll"
+#r "MapGenerator.dll"
+#r "Newtonsoft.Json/lib/net40/Newtonsoft.Json.dll"
 
 open System
 open System.Threading

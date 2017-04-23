@@ -34,8 +34,6 @@ Target "Build" (fun _ ->
 
 Target "DeployAzure" (fun _ ->
     CopyDir (wwwRoot "LevelGenerator.Web") "LevelGenerator.Web" allFiles
-    CopyDir (wwwRoot "build") "build" allFiles
-    CopyDir (wwwRoot "packages") "packages" allFiles
     CopyFile @"d:\home\site\wwwroot" @"LevelGenerator.Web\web.config" )
 
 // Build order

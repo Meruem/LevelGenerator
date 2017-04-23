@@ -1,8 +1,12 @@
 // --------------------------------------------------------------------------------------
 // FAKE build script
 // --------------------------------------------------------------------------------------
+
+#I "../packages"
+#I "../../repository/packages"
  
-#r @"../packages/FAKE/tools/FakeLib.dll"
+#r "FAKE/tools/FakeLib.dll"
+#r "Suave/lib/net40/Suave.dll"
  
 open System
 open System.IO
@@ -11,8 +15,6 @@ open Fake
 Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
   
 // Step 2. Use the packages
-  
-#r "../packages/Suave/lib/net40/Suave.dll"
 #load "app.fsx"
 
 open Suave 
