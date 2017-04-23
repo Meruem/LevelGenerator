@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MapGenerator</RootNamespace>
     <AssemblyName>MapGenerator</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>2.3.0.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Name>MapGenerator</Name>
