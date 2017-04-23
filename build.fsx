@@ -23,19 +23,13 @@ let version = "0.1"  // or retrieve from CI server
 
 // Targets
 Target "Clean" (fun _ ->
-    CleanDirs [buildDir; deployDir]
+    CleanDirs [buildDir; deployDir; wwwRootDir]
 )
 
 Target "Build" (fun _ ->
     // compile all projects below src/app/
     MSBuildDebug buildDir "Build" appReferences
     |> Log "AppBuild-Output: "
-)
-
-Target "Deploy" (fun _ ->
-    !! (buildDir + "/**/*.*")
-    -- "*.zip"
-    |> Zip buildDir (deployDir + "ApplicationName." + version + ".zip")
 )
 
 Target "DeployAzure" (fun _ ->
@@ -47,7 +41,7 @@ Target "DeployAzure" (fun _ ->
 // Build order
 "Clean"
   ==> "Build"
-  ==> "Deploy"
+  ==> "DeployAzure"
 
 // start build
 RunTargetOrDefault "Build"
