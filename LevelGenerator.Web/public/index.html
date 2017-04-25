@@ -7,9 +7,13 @@
     <body>
 
         <div id="app">
-            {{ message }}
+            Width:
+            <input v-model="width">
+            Height:
+            <input v-model="height">
+            <button v-on:click="generate">Generate</button>
         </div>
-
+        
         <script src="3rdParty/vue.js"> </script>
         <script src="scripts/app.js"> </script>
     </body>

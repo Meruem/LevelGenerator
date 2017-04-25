@@ -1,6 +1,12 @@
 new Vue({
   el: '#app',
   data: {
-    message: 'Hello Vue.js!'
+    width : '30',
+    height : '30'
+  },
+  methods: {
+    generate: function () {
+      
+    }
   }
 })

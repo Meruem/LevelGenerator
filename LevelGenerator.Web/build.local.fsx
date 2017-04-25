@@ -73,7 +73,7 @@ let printHomeDirectory = "Home directory: " + homeDirectory
 let serverConfig =
   { webConfig with
       homeFolder = Some homeDirectory
-      logger =  Targets.create Verbose [||]
+      //logger =  Targets.create Verbose [||]
       bindings = [ HttpBinding.createSimple HTTP  "127.0.0.1" 8083] }
 
 let reloadAppServer () =
