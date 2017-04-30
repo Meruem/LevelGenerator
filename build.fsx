@@ -47,7 +47,7 @@ Target "DeployAzure" (fun _ ->
 
 // Build order
 "Clean"
-  ==> "NpmUpdate"  
+  //==> "NpmUpdate"  
   ==> "Build"
   ==> "DeployAzure"
 
