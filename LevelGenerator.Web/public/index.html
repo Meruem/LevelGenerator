@@ -7,11 +7,15 @@
     <body>
 
         <div id="app">
-            Width:
-            <input v-model="width">
-            Height:
-            <input v-model="height">
-            <button v-on:click="generate">Generate</button>
+            <div>
+                Width:
+                <input v-model="width">
+                Height:
+                <input v-model="height">
+                <button v-on:click="generate">Generate</button>
+            </div>
+            <canvas id="generateResult" width="0" height="0" style="border:1px solid #000000;">
+            </canvas>
         </div>
         
         <script src="3rdParty/vue.js"> </script>

@@ -2,6 +2,7 @@
 #r "./packages/FAKE/tools/FakeLib.dll"
 
 open Fake
+open NpmHelper
 
 // Directories
 let buildDir  = "./build/"
@@ -32,14 +33,23 @@ Target "Build" (fun _ ->
     |> Log "AppBuild-Output: "
 )
 
+Target "NpmUpdate" (fun _ ->
+    Npm (fun p ->
+        { p with 
+            Command = Install Standard
+        })
+)
+
 Target "DeployAzure" (fun _ ->
     CopyDir (wwwRoot "LevelGenerator.Web") "LevelGenerator.Web" allFiles
     CopyFile @"d:\home\site\wwwroot" @"LevelGenerator.Web\web.config" )
 
 // Build order
 "Clean"
+  ==> "NpmUpdate"  
   ==> "Build"
   ==> "DeployAzure"
+
 
 // start build
 RunTargetOrDefault "Build"

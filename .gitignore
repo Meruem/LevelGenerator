@@ -244,5 +244,8 @@ paket-files/
 .idea/
 *.sln.iml
 
+# Visual studio code config
+.vscode/
+
 build/
 deploy/
