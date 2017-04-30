@@ -36,6 +36,7 @@ Target "Build" (fun _ ->
 Target "NpmUpdate" (fun _ ->
     Npm (fun p ->
         { p with 
+            NpmFilePath = environVarOrDefault "NPM_FILE_PATH" p.NpmFilePath
             Command = Install Standard
         })
 )
