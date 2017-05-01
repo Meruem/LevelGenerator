@@ -8,7 +8,6 @@
 #r "Newtonsoft.Json/lib/net40/Newtonsoft.Json.dll"
 
 open System
-open System.Threading
 open System.Text
 open Suave
 open Suave.Filters
