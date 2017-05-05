@@ -13,7 +13,6 @@ open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Table
 //open Microsoft.WindowsAzure.ServiceRuntime
 
-let connectionString = "DefaultEndpointsProtocol=https;AccountName=levgendb;AccountKey=Qvb3tTMJ9jXcbbr3lw9sxv2YHmqDw1DD5v0Ej/000bwoY/SnLpQ+YDEV0Xlj99EMrcjfzBy//qYUt5fRge1NcA==;EndpointSuffix=core.windows.net"
 let storageAccount = CloudStorageAccount.Parse connectionString
 let tableClient = storageAccount.CreateCloudTableClient ()
 let table = tableClient.GetTableReference("testTable")
