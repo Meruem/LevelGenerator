@@ -249,3 +249,5 @@ paket-files/
 
 build/
 deploy/
+
+dbConnection.fsx

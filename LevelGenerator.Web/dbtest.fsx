@@ -5,12 +5,14 @@
 
 #r "WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
 
+#load "dbConnection.fsx"
 open System
 open System.IO
 //open Microsoft.Azure
 open Microsoft.WindowsAzure
 open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Table
+open DbConnection
 //open Microsoft.WindowsAzure.ServiceRuntime
 
 let storageAccount = CloudStorageAccount.Parse connectionString
