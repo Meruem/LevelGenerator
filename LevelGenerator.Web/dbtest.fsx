@@ -6,14 +6,13 @@
 #r "WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
 
 #load "dbConnection.fsx"
+
 open System
 open System.IO
-//open Microsoft.Azure
 open Microsoft.WindowsAzure
 open Microsoft.WindowsAzure.Storage
 open Microsoft.WindowsAzure.Storage.Table
 open DbConnection
-//open Microsoft.WindowsAzure.ServiceRuntime
 
 let storageAccount = CloudStorageAccount.Parse connectionString
 let tableClient = storageAccount.CreateCloudTableClient ()
@@ -26,8 +25,7 @@ type Customer(firstName, lastName, email: string, phone: string) =
     member val PhoneNumber = phone with get, set
 
 
-let customer = 
-    Customer("Walter", "Harp", "Walter@contoso.com", "425-555-0101")
+let customer = Customer("test", "test", "Walter@contoso.com", "425-555-0101")
 
 let insertOp = TableOperation.Insert(customer)
 let dostuff () = 

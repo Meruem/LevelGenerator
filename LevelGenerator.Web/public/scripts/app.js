@@ -26,11 +26,22 @@ var repaint = response => {
 new Vue({
   el: '#app',
   data: {
+    showGenerate : true,
+    showDesigner : false,
     width : '30',
     height : '30',
     response : []
   },
   methods: {
+    changeTab: function(nr) {
+      if (nr == 1) {
+        this.showGenerate = true;
+        this.showDesigner = false;
+      } else if (nr == 2) {
+        this.showGenerate = false;
+        this.showDesigner = true;
+      }
+    },
     generate: function () {
       fetch('./generate/' + this.width + '/' + this.height)
         .then(res => {

@@ -2,20 +2,26 @@
 <html lang="en">
     <head>
         <title>Level Generator</title>
-
     </head>
     <body>
 
         <div id="app">
-            <div>
-                Width:
-                <input v-model="width">
-                Height:
-                <input v-model="height">
-                <button v-on:click="generate">Generate</button>
+            <button v-on:click="changeTab(1)">Generator</button>
+            <button v-on:click="changeTab(2)">Desginer</button>
+            <div v-if="showGenerate">
+                <div>
+                    Width:
+                    <input v-model="width">
+                    Height:
+                    <input v-model="height">
+                    <button v-on:click="generate">Generate</button>
+                </div>
+                <canvas id="generateResult" width="0" height="0" style="border:1px solid #000000;">
+                </canvas>
             </div>
-            <canvas id="generateResult" width="0" height="0" style="border:1px solid #000000;">
-            </canvas>
+            <div v-if="showDesigner">
+                Desinger:
+            </div>
         </div>
         
         <script src="3rdParty/vue.js"> </script>
